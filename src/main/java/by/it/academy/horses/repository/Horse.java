@@ -1,4 +1,4 @@
-package by.it.academy.horses.accessingdatajpa;
+package by.it.academy.horses.repository;
 
 import lombok.*;
 
