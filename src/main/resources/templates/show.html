@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+    <meta charset="UTF-8">
+    <title>Show</title>
+</head>
+<body>
+Привет
+<!--<p th:text="${horse + ', ' + horse.age()}">VALUE</p>-->
+<p th:text="${horse.getId()}">VALUE</p>
+
+<a th:href="@{/{id}/edit(id=${horse.getId()})}">Edit</a>
+
+<form th:method="DELETE" th:action="@{/{id}(id=${horse.getId()})}">
+    <input type="submit" value="Delete"/>
+</form>
+</body>
+</html>
