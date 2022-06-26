@@ -9,15 +9,15 @@
 
     <label for="type">Enter type5: </label>
     <input type="text" th:field="*{type}" id="type"/>
-    <!--div style="color:red" th:if="${#fields.hasErrors('type')}" th:errors="*{type}">Name Error</div>-->
+    <div style="color:red" th:if="${#fields.hasErrors('type')}" th:errors="*{type}">Name Error</div>
     <br/>
     <label for="age">Enter age: </label>
     <input type="text" th:field="*{age}" id="age"/>
-    <!--<div style="color:red" th:if="${#fields.hasErrors('age')}" th:errors="*{age}">Age Error</div>-->
+    <div style="color:red" th:if="${#fields.hasErrors('age')}" th:errors="*{age}">Age Error</div>
     <br/>
     <label for="price">Enter price: </label>
     <input type="text" th:field="*{price}" id="price"/>
-    <!--<div style="color:red" th:if="${#fields.hasErrors('price')}" th:errors="*{price}">Price Error</div>-->
+    <div style="color:red" th:if="${#fields.hasErrors('price')}" th:errors="*{price}">Price Error</div>
     <br/>
     <input type="submit" value="Create!"/>
 </form>

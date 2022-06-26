@@ -2,23 +2,42 @@ package by.it.academy.horses.controller;
 
 import by.it.academy.horses.repository.Horse;
 import by.it.academy.horses.repository.HorseRepository;
+import by.it.academy.horses.service.HorseService;
+import by.it.academy.horses.service.dto.HorseDto;
+import by.it.academy.horses.service.mappers.HorseMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 public class HorseController {
     @Autowired
     private HorseRepository horseRepository;
 
+    private final HorseService horseService;
+
+    private final HorseMapper horseMapper;
+
+
+    public HorseController(HorseService horseService, HorseMapper horseMapper) {
+        this.horseService = horseService;
+        this.horseMapper = horseMapper;
+    }
+
     @GetMapping()
     public String index(Model model) {
-        List<Horse> horseList = (List<Horse>) horseRepository.findAll();
-        /*horseList.forEach(Horses::getId);*/
-        model.addAttribute("horses", horseList);
+        List<HorseDto> horses = ((List<Horse>) horseService.findAll()).stream()
+                .map(horseMapper::toHorseDto)
+                .collect(Collectors.toList());
+
+
+        model.addAttribute("horses", horses);
         return "index";
     }
 
@@ -37,9 +56,13 @@ public class HorseController {
     }
 
     @PostMapping()
-    public String create(@ModelAttribute("horse") Horse horse) {
+    public String create(@ModelAttribute("horse") @Valid Horse horse,
+                         BindingResult bindingResult) {
+        System.out.println(bindingResult.hasErrors());
+        if (bindingResult.hasErrors())
+            return "new";
         horseRepository.save(horse);
-         return "redirect:/";
+        return "redirect:/";
     }
 
     @GetMapping("/{id}/edit")
@@ -50,9 +73,9 @@ public class HorseController {
     }
 
     @PatchMapping("/{id}")
-    public String update(@ModelAttribute("horse")  Horse horse) {
+    public String update(@ModelAttribute("horse") Horse horse) {
         horseRepository.save(horse);
-         return "redirect:/";
+        return "redirect:/";
     }
 
     @DeleteMapping("/{id}")
