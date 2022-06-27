@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <script type="text/javascript" th:src="@{/js/validation.js}"></script>
     <link href="../static/css/form.css" th:href="@{/css/form.css}" rel="stylesheet"/>
     <link href="../static/css/table.css" th:href="@{/css/table.css}" rel="stylesheet" />
     <title>Create Horse</title>
@@ -10,29 +11,24 @@
 <h1>Добавить лошадь</h1>
 
 <div class="container">
-    <form th:method="POST" th:action="@{/}" th:object="${horse}">
-
+    <form th:method="POST" th:action="@{/}" th:object="${horse}" onsubmit="return validateForm()">
         <label>Масть:
             <br>
             <input type="text" th:field="*{type}" name="type" placeholder="Гнедая">
-            <div style="color:red" th:if="${#fields.hasErrors('type')}" th:errors="*{type}">Type Error</div>
             <br>
         </label>
 
         <label>Возраст:
             <br>
             <input type="text" th:field="*{age}" name="age" required placeholder="5">
-            <div style="color:red" th:if="${#fields.hasErrors('age')}" th:errors="*{age}">Age Error</div>
             <br>
         </label>
 
         <label>Цена:
             <br>
             <input type="text" th:field="*{price}" name="price" required placeholder="15000">
-            <div style="color:red" th:if="${#fields.hasErrors('price')}" th:errors="*{price}">Price Error</div>
             <br>
         </label>
-
         <input type="submit" value="Сохранить">
     </form>
 </div>
