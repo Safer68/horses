@@ -6,7 +6,7 @@
     <title>Horses</title>
 </head>
 <body>
-<div th:switch="${horses}">
+<div th:switch="${horsePage}">
     <h2 th:case="null">No horses found!</h2>
     <div th:case="*">
         <h2>Лошади</h2>
@@ -21,7 +21,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="horse : ${horses}">
+            <tr th:each="horse : ${horsePage}">
                 <td th:text="${horse.id}"></td>
                 <td th:text="${horse.type}"></td>
                 <td th:text="${horse.age}"></td>
@@ -37,6 +37,12 @@
         </table>
     </div>
     <p><a href="/horse-create">Добавить лошадь</a></p>
+    <div th:if="${horsePage.totalPages > 0}" class="pagination"
+         th:each="pageNumber : ${pageNumbers}">
+        <a th:href="@{/(size=${horsePage.size}, page=${pageNumber})}"
+           th:text=${pageNumber}
+           th:class="${pageNumber==horsePage.number + 1} ? active"></a>
+    </div>
 </div>
 </body>
 </html>

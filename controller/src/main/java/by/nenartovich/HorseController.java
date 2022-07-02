@@ -2,12 +2,19 @@ package by.nenartovich;
 
 
 import by.nenartovich.dto.HorseDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.w3c.dom.stylesheets.LinkStyle;
 
 import javax.validation.Valid;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Controller
 public class HorseController {
@@ -26,9 +33,24 @@ public class HorseController {
     }
 
     @GetMapping()
-    public String index(Model model) {
-        model.addAttribute(HORSES, horseService.findAll());
+    public String listHorse(Model model,
+                            @RequestParam("page") Optional<Integer> page,
+                            @RequestParam("size") Optional<Integer> size) {
+        int currentPage = page.orElse(1);
+        int pageSize = size.orElse(5);
+
+        Page<HorseDto> horsePage = horseService.findPaginated(PageRequest.of(currentPage - 1, pageSize));
+        model.addAttribute("horsePage", horsePage);
+
+        int totalPages = horsePage.getTotalPages();
+        if (totalPages > 0) {
+            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
+                    .boxed()
+                    .collect(Collectors.toList());
+            model.addAttribute("pageNumbers", pageNumbers);
+        }
         return HORSE_LIST;
+
     }
 
     @GetMapping("/horse-create")
